@@ -27,7 +27,7 @@ export class User extends Model {
                 type: DataTypes.STRING,
                 allowNull: false
             }
-            }, {
+        }, {
                 sequelize,
                 modelName: 'User',
                 tableName: 'users', // ✅ Nên đặt tên bảng rõ ràng

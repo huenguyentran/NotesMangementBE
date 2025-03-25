@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { authService } from '../services/auth.service'
 import { NextFunction, ParamsDictionary } from 'express-serve-static-core'
+import { console } from "inspector";
 //import { Express } from 'express'
 
 export class AuthController {
     register = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
         try {
             const { email, password } = req.body;
-            //console.log(email, password);
             if (!email || !password) {
                 console.log('Wrong input');
                 res.status(400).json({ message: 'Missing email or password' });
@@ -34,9 +34,23 @@ export class AuthController {
     login = async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body;
+            console.log(email, password);
             const user = await authService.login(email, password);
+            res.status(200).json(user);
         } catch (error) {
             console.log(error);
+            res.sendStatus(400).json(error);
+        }
+    }
+
+    userlist = async (req: Request, res: Response) => {
+        try {
+            const users = await authService.getAllUser();
+            console.log(users.toString);
+            res.status(200).json(users);
+        } catch (error) {
+            console.log(error);
+            res.sendStatus(400);
         }
     }
 

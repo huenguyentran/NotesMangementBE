@@ -3,6 +3,7 @@ import { config } from 'dotenv'
 import { env } from 'process'
 import { parseInt } from 'lodash'
 import { User } from '../Models/user.model'
+import { Note } from '../Models/note.model'
 
 config()
 
@@ -33,7 +34,7 @@ class DatabaseService {
   async syncDB() {
     try {
       User.initModel(this.sequelize);
-     // await this.sequelize.sync({alter: true});
+      Note.initModel(this.sequelize);
       console.log('databaseService.service success connect');
     } catch(error)
     {

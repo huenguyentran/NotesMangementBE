@@ -1,21 +1,17 @@
 import { User } from "../Models/user.model";
-//import sequelize from "sequelize";
 import bcrypt from 'bcrypt'
 
 class AuthService {
     register = async (Email: string, Password: string) => {
         const hashedPassword = await bcrypt.hash(Password, 10);
-        console.log(Email, Password, 'authService.service.ts before create');
         const new_user = await User.create({
             email: Email,
-            password: Password
+            password: hashedPassword
         })
-
-        console.log(Email, Password, 'authService.service.ts after create');
         return new_user; 
     }
 
-    async login(email: string, password: string) {
+    login = async (email: string, password: string) => {
         const user = await User.findOne({ where: { email } });
         if (!user) throw new Error('User not found');
     
@@ -23,6 +19,12 @@ class AuthService {
         if (!isValid) throw new Error('Invalid password');
     
         return user;
+    }
+
+    getAllUser = async () => {
+        console.log("hhh");
+        const users = await User.findAll();
+        return users;
     }
 
     getUserByEmail = async (Email: string)=>{
