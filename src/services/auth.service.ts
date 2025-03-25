@@ -21,12 +21,6 @@ class AuthService {
         return user;
     }
 
-    getAllUser = async () => {
-        console.log("hhh");
-        const users = await User.findAll();
-        return users;
-    }
-
     getUserByEmail = async (Email: string)=>{
         const user = await User.findOne({where: { email: Email}});
         if(!user) return null;
