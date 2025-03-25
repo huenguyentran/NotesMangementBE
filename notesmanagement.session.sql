@@ -13,6 +13,9 @@ CREATE TABLE Note(
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
 );
--- @block
 Drop TABLE note;
-Drop TABLE user;
+-- @block
+Drop TABLE users;
+-- @block
+SELECT *
+FROM users;

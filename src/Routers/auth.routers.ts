@@ -1,12 +1,12 @@
 import express from "express";
-import { AuthController } from "Controllers/auth.controller";
-import { config } from "dotenv";
+import { authController } from "../Controllers/auth.controller";
+import { wrapRequestHandler } from "../utils/handler";
 
-config();
-const app = express();
-const port = 8080;
 
-app.use(express.json());
+const authRouter = express.Router();
 
-app.use('/register', au)
-const router = express.Router()
+authRouter.post('/register', authController.register);
+
+export default authRouter;
+
+

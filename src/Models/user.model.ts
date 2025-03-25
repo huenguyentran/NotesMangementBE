@@ -1,16 +1,14 @@
-import { DataType, DataTypes, Model } from "sequelize";
-import { Sequelize } from "sequelize";
-import bcrypt from 'bcrypt'
-import sequelize from "sequelize";
+import { DataTypes, InferAttributes, InferCreationAttributes, Model, Sequelize } from 'sequelize'
+import bcrypt from 'bcrypt';
 
 export class User extends Model {
-    declare user_id: number;
+    declare user_id?: number;
     declare email: string;
     declare password: string;
 
     async checkPassword(password: string)
     {
-        return bcrypt.compare(password, this.password);
+        return await bcrypt.compare(password, this.password);
     }
 
     static initModel(sequelize: Sequelize)
@@ -23,17 +21,17 @@ export class User extends Model {
             },
             email: {
                 type: DataTypes.STRING,
-                allowNull: false,
-                unique: true
+                allowNull: false
             },
-        
             password: {
                 type: DataTypes.STRING,
                 allowNull: false
             }
-        }, {
-            sequelize,
-            modelName: 'User'
-        })
+            }, {
+                sequelize,
+                modelName: 'User',
+                tableName: 'users', // ✅ Nên đặt tên bảng rõ ràng
+            }
+        )
     }
 }

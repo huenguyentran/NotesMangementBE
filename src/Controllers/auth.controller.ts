@@ -1,31 +1,35 @@
-import { Request, Response } from 'express'
-import { authService } from 'services/auth.service'
-import { Express } from 'express'
+import { Request, Response } from "express";
+import { authService } from '../services/auth.service'
+import { NextFunction, ParamsDictionary } from 'express-serve-static-core'
+//import { Express } from 'express'
 
 export class AuthController {
-    register = async (req: Request, res: Response) => {
+    register = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
         try {
             const { email, password } = req.body;
-            if(!email || !password)
-            {
-                console.log('Wrong input')
-                return res.sendStatus(400);
+            //console.log(email, password);
+            if (!email || !password) {
+                console.log('Wrong input');
+                res.status(400).json({ message: 'Missing email or password' });
             }
 
             const existingUser = await authService.getUserByEmail(email);
-            if(existingUser)
-            {
-                console.log('User exiting');
-                return res.sendStatus(400);
+            if (existingUser) {
+                console.log('User exists');
+                res.status(400).json({ message: 'User already exists' });
             }
+            else
+            {
+                console.log(email, password, "2");
+                const user = await authService.register(email, password);
+                res.status(201).json(user);
 
-            const user = await authService.register(email, password);
-            return res.sendStatus(201);
+            }
         } catch (error) {
             console.log(error);
-            return res.sendStatus(400);
+            res.sendStatus(400);
         }
-    }
+    };
 
     login = async (req: Request, res: Response) => {
         try {

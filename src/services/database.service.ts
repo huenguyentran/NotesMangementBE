@@ -2,6 +2,7 @@ import { Sequelize, Dialect } from 'sequelize'
 import { config } from 'dotenv'
 import { env } from 'process'
 import { parseInt } from 'lodash'
+import { User } from '../Models/user.model'
 
 config()
 
@@ -27,6 +28,23 @@ class DatabaseService {
     } catch (error) {
       console.error('❌ Unable to connect to the database:', (error as Error).message)
     }
+  }
+
+  async syncDB() {
+    try {
+      User.initModel(this.sequelize);
+     // await this.sequelize.sync({alter: true});
+      console.log('databaseService.service success connect');
+    } catch(error)
+    {
+      console.log(error, 'Database.service.ts');
+    }
+  }
+
+
+  async init() {
+    await this.connect();
+    await this.syncDB();
   }
 }
 

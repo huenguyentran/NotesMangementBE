@@ -1,10 +1,18 @@
-import { User } from "Models/user.model";
+import { User } from "../Models/user.model";
+//import sequelize from "sequelize";
 import bcrypt from 'bcrypt'
 
-export class AuthService {
-    async register (email: string, password: string){
-        const hashedPassword = await bcrypt.hash(password, 10);
-        return await User.create({email, password: hashedPassword});
+class AuthService {
+    register = async (Email: string, Password: string) => {
+        const hashedPassword = await bcrypt.hash(Password, 10);
+        console.log(Email, Password, 'authService.service.ts before create');
+        const new_user = await User.create({
+            email: Email,
+            password: Password
+        })
+
+        console.log(Email, Password, 'authService.service.ts after create');
+        return new_user; 
     }
 
     async login(email: string, password: string) {
@@ -19,7 +27,7 @@ export class AuthService {
 
     getUserByEmail = async (Email: string)=>{
         const user = await User.findOne({where: { email: Email}});
-        if(!user) return {}
+        if(!user) return null;
         return user;
     }
 }
